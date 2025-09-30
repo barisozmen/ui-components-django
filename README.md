@@ -2,6 +2,8 @@
 
 A production-ready, elegant, and comprehensive UI components library for Django using `django-components`, Bootstrap 5, jQuery, and Crispy Forms.
 
+![](home-screenshot.png)
+
 ## Features
 
 - **🎨 Categorized Components**: Basic, Moderate, and Complex components
