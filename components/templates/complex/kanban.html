@@ -1,0 +1,127 @@
+{% load component_tags %}
+<div class="kanban-board d-flex gap-3 overflow-auto" {% for key, value in attrs.items %}{{ key }}="{{ value }}" {% endfor %}>
+  {% for column in columns %}
+  <div class="kanban-column flex-fill" data-column="{{ column.id }}" style="min-width: 280px;">
+    <div class="card">
+      <div class="card-header bg-{{ column.variant|default:'secondary' }} text-white">
+        <h5 class="mb-0">{{ column.title }}</h5>
+      </div>
+      <div class="card-body kanban-cards" data-column-id="{{ column.id }}" style="min-height: 300px;">
+        {% for card in cards %}
+          {% if card.column == column.id %}
+          <div class="card mb-2 kanban-card" data-id="{{ card.id }}" draggable="true">
+            <div class="card-body">
+              <h6>{{ card.title }}</h6>
+              <p class="small mb-0">{{ card.description }}</p>
+            </div>
+          </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+<script>
+(function() {
+  function initializeKanban() {
+    // Check if Sortable is loaded
+    if (typeof Sortable === 'undefined') {
+      console.error('Sortable.js not loaded');
+      return;
+    }
+    
+    // Initialize Sortable for each kanban column
+    const kanbanCards = document.querySelectorAll('.kanban-cards');
+    
+    kanbanCards.forEach(function(element) {
+      // Avoid re-initializing
+      if (element.classList.contains('sortable-initialized')) {
+        return;
+      }
+      
+      new Sortable(element, {
+        group: {
+          name: 'kanban',
+          pull: true,
+          put: true
+        },
+        animation: 150,
+        ghostClass: 'sortable-ghost',
+        chosenClass: 'sortable-chosen',
+        dragClass: 'sortable-drag',
+        onStart: function(evt) {
+          // Add visual feedback when dragging starts
+          evt.item.style.opacity = '0.5';
+        },
+        onEnd: function(evt) {
+          // Reset opacity when dragging ends
+          evt.item.style.opacity = '';
+          
+          // Get the card ID and new column
+          const cardId = evt.item.getAttribute('data-id');
+          const newColumnId = evt.to.getAttribute('data-column-id');
+          const oldColumnId = evt.from.getAttribute('data-column-id');
+          
+          // Only trigger update if the card moved to a different column
+          if (newColumnId !== oldColumnId) {
+            // Trigger custom event for card movement
+            const event = new CustomEvent('kanban:cardMoved', {
+              detail: {
+                cardId: cardId,
+                fromColumn: oldColumnId,
+                toColumn: newColumnId,
+                newIndex: evt.newIndex
+              }
+            });
+            document.dispatchEvent(event);
+            
+            console.log('Card moved:', {
+              cardId: cardId,
+              fromColumn: oldColumnId,
+              toColumn: newColumnId,
+              newIndex: evt.newIndex
+            });
+          }
+        }
+      });
+      
+      element.classList.add('sortable-initialized');
+    });
+  }
+  
+  // Initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeKanban);
+  } else {
+    // DOM is already ready, initialize immediately
+    initializeKanban();
+  }
+})();
+</script>
+
+<style>
+.sortable-ghost {
+  opacity: 0.4;
+  background: #f8f9fa;
+}
+
+.sortable-chosen {
+  cursor: grabbing;
+}
+
+.sortable-drag {
+  transform: rotate(5deg);
+}
+
+.kanban-card {
+  cursor: grab;
+  transition: opacity 0.2s ease;
+}
+
+.kanban-card:active {
+  cursor: grabbing;
+}
+</style>

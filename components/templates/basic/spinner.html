@@ -1,0 +1,4 @@
+{% load component_tags %}
+<div class="spinner-{{ type }} text-{{ variant }} spinner-{{ type }}-{{ size }}" role="status" {% for key, value in attrs.items %}{{ key }}="{{ value }}" {% endfor %}>
+  <span class="visually-hidden">{% slot "default" %}Loading...{% endslot %}</span>
+</div>

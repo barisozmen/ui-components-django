@@ -1,0 +1,13 @@
+{% load component_tags %}
+<div class="avatar avatar-{{ size }} avatar-{{ shape }}" 
+     style="width: {% if size == 'sm' %}32px{% elif size == 'lg' %}64px{% elif size == 'xl' %}96px{% else %}48px{% endif %}; 
+            height: {% if size == 'sm' %}32px{% elif size == 'lg' %}64px{% elif size == 'xl' %}96px{% else %}48px{% endif %};" 
+     {% for key, value in attrs.items %}{{ key }}="{{ value }}" {% endfor %}>
+  {% if src %}
+  <img src="{{ src }}" alt="{{ alt }}" class="{% if shape == 'circle' %}rounded-circle{% else %}rounded{% endif %}" style="width: 100%; height: 100%; object-fit: cover;">
+  {% else %}
+  <div class="bg-secondary text-white d-flex align-items-center justify-content-center h-100 {% if shape == 'circle' %}rounded-circle{% else %}rounded{% endif %}">
+    {% slot "default" %}{{ alt|slice:":1"|upper|default:"U" }}{% endslot %}
+  </div>
+  {% endif %}
+</div>

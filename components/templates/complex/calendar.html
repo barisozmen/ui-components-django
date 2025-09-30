@@ -1,0 +1,48 @@
+{% load component_tags %}
+<div class="calendar" {% for key, value in attrs.items %}{{ key }}="{{ value }}" {% endfor %}>
+  <div class="calendar-header d-flex justify-content-between align-items-center mb-3">
+    <button class="btn btn-sm btn-outline-secondary calendar-prev">&laquo;</button>
+    <h5 class="calendar-title mb-0"></h5>
+    <button class="btn btn-sm btn-outline-secondary calendar-next">&raquo;</button>
+  </div>
+  <div class="calendar-grid"></div>
+</div>
+<script>
+$(document).ready(function() {
+  const events = {{ events|safe }};
+  let currentDate = new Date();
+  
+  function renderCalendar() {
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    
+    $('.calendar-title').text(`${currentDate.toLocaleString('default', { month: 'long' })} ${year}`);
+    
+    let html = '<div class="row"><div class="col fw-bold">Sun</div><div class="col fw-bold">Mon</div><div class="col fw-bold">Tue</div><div class="col fw-bold">Wed</div><div class="col fw-bold">Thu</div><div class="col fw-bold">Fri</div><div class="col fw-bold">Sat</div></div>';
+    html += '<div class="row">';
+    
+    for (let i = 0; i < firstDay; i++) html += '<div class="col"></div>';
+    for (let day = 1; day <= daysInMonth; day++) {
+      if ((firstDay + day - 1) % 7 === 0 && day !== 1) html += '</div><div class="row">';
+      html += `<div class="col border p-2 calendar-day" data-date="${year}-${month+1}-${day}">${day}</div>`;
+    }
+    html += '</div>';
+    
+    $('.calendar-grid').html(html);
+  }
+  
+  $('.calendar-prev').on('click', () => {
+    currentDate.setMonth(currentDate.getMonth() - 1);
+    renderCalendar();
+  });
+  
+  $('.calendar-next').on('click', () => {
+    currentDate.setMonth(currentDate.getMonth() + 1);
+    renderCalendar();
+  });
+  
+  renderCalendar();
+});
+</script>

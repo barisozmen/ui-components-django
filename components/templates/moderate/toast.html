@@ -1,0 +1,10 @@
+{% load component_tags %}
+<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="{{ delay }}" data-bs-autohide="{{ autohide|yesno:'true,false' }}" {% for key, value in attrs.items %}{{ key }}="{{ value }}" {% endfor %}>
+  <div class="toast-header bg-{{ variant }} text-white">
+    <strong class="me-auto">{{ title|default:"Notification" }}</strong>
+    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+  </div>
+  <div class="toast-body">
+    {% slot "default" %}Toast message{% endslot %}
+  </div>
+</div>

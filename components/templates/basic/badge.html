@@ -1,0 +1,4 @@
+{% load component_tags %}
+<span class="badge bg-{{ variant }}{% if pill %} rounded-pill{% endif %}" {% for key, value in attrs.items %}{{ key }}="{{ value }}" {% endfor %}>
+  {% slot "default" %}Badge{% endslot %}
+</span>

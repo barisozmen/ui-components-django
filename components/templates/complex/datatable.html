@@ -1,0 +1,53 @@
+{% load component_tags %}
+{% load ui_extras %}
+<div class="datatable-wrapper" {% for key, value in attrs.items %}{{ key }}="{{ value }}" {% endfor %}>
+  {% if searchable %}
+  <div class="mb-3">
+    <input type="text" class="form-control datatable-search" placeholder="Search...">
+  </div>
+  {% endif %}
+  <div class="table-responsive">
+    <table class="table table-hover datatable">
+      <thead>
+        <tr>
+          {% for col in columns %}
+          <th {% if sortable %}class="sortable" data-column="{{ forloop.counter0 }}"{% endif %}>
+            {{ col.label }}
+            {% if sortable %}<span class="sort-icon"></span>{% endif %}
+          </th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in data %}
+        <tr>
+          {% for col in columns %}
+          <td>{{ row|get_item:col.key|default:"-" }}</td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+<script>
+$(document).ready(function() {
+  $('.datatable-search').on('keyup', function() {
+    const value = $(this).val().toLowerCase();
+    $('.datatable tbody tr').filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+  
+  $('.sortable').on('click', function() {
+    const column = $(this).data('column');
+    const $tbody = $('.datatable tbody');
+    const rows = $tbody.find('tr').toArray().sort((a, b) => {
+      const aText = $(a).find('td').eq(column).text();
+      const bText = $(b).find('td').eq(column).text();
+      return aText.localeCompare(bText);
+    });
+    $tbody.html(rows);
+  });
+});
+</script>

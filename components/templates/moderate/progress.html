@@ -1,0 +1,6 @@
+{% load component_tags %}
+<div class="progress" {% for key, value in attrs.items %}{{ key }}="{{ value }}" {% endfor %}>
+  <div class="progress-bar bg-{{ variant }}{% if striped %} progress-bar-striped{% endif %}{% if animated %} progress-bar-animated{% endif %}" role="progressbar" style="width: {{ percentage }}%" aria-valuenow="{{ value }}" aria-valuemin="0" aria-valuemax="{{ max_value }}">
+    {% slot "default" %}{{ percentage }}%{% endslot %}
+  </div>
+</div>

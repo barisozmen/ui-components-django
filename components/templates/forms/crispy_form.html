@@ -1,0 +1,7 @@
+{% load crispy_forms_tags %}
+{% load component_tags %}
+
+<form method="{{ form.helper.form_method|default:'post' }}" action="{{ form.helper.form_action|default:'' }}" {% if form.helper.form_id %}id="{{ form.helper.form_id }}"{% endif %} {% for key, value in attrs.items %}{{ key }}="{{ value }}" {% endfor %}>
+  {% csrf_token %}
+  {% crispy form %}
+</form>

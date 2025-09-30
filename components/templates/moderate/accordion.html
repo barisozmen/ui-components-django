@@ -1,0 +1,17 @@
+{% load component_tags %}
+<div class="accordion" id="{{ id }}" {% for key, value in attrs.items %}{{ key }}="{{ value }}" {% endfor %}>
+  {% for item in items %}
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="heading-{{ id }}-{{ forloop.counter0 }}">
+      <button class="accordion-button{% if not item.show %} collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ id }}-{{ forloop.counter0 }}" aria-expanded="{{ item.show|yesno:'true,false' }}">
+        {{ item.title }}
+      </button>
+    </h2>
+    <div id="collapse-{{ id }}-{{ forloop.counter0 }}" class="accordion-collapse collapse{% if item.show %} show{% endif %}" {% if not always_open %}data-bs-parent="#{{ id }}"{% endif %}>
+      <div class="accordion-body">
+        {{ item.content|safe }}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>

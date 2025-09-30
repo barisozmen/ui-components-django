@@ -1,0 +1,4 @@
+{% load component_tags %}
+<span data-bs-toggle="tooltip" data-bs-placement="{{ placement }}" title="{{ text }}" {% for key, value in attrs.items %}{{ key }}="{{ value }}" {% endfor %}>
+  {% slot "default" %}Hover me{% endslot %}
+</span>

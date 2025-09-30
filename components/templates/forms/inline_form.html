@@ -1,0 +1,13 @@
+{% load component_tags %}
+
+<form method="post" action="{{ action }}" class="row row-cols-lg-auto g-3 align-items-center" {% for key, value in attrs.items %}{{ key }}="{{ value }}" {% endfor %}>
+  {% csrf_token %}
+  {% for field in form %}
+  <div class="col-12">
+    {{ field }}
+  </div>
+  {% endfor %}
+  <div class="col-12">
+    <button type="submit" class="btn btn-primary">{{ submit_text }}</button>
+  </div>
+</form>

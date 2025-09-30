@@ -1,0 +1,55 @@
+{% load django_bootstrap5 %}
+{% load component_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}UI Components Library{% endblock %}</title>
+    
+    {% bootstrap_css %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    
+    <style>
+        .wizard-step { display: none; }
+        .wizard-step.active { display: block; }
+        .wizard-steps .nav-link.completed { background-color: #198754; color: white; }
+        .datatable th.sortable { cursor: pointer; user-select: none; }
+        .datatable th.sortable:hover { background-color: #f8f9fa; }
+    </style>
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    {% component "navbar" brand="UIComponents" items=navbar_items variant="dark" %}
+    {% endcomponent %}
+    
+    <div class="container my-4">
+        {% if messages %}
+            {% for message in messages %}
+                {% component "alert" variant=message.tags|default:"info" dismissible=True %}
+                    {{ message }}
+                {% endcomponent %}
+            {% endfor %}
+        {% endif %}
+        
+        {% block content %}{% endblock %}
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    {% bootstrap_javascript %}
+    
+    <script>
+        // Initialize Bootstrap tooltips
+        $(document).ready(function() {
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

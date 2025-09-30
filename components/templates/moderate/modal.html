@@ -1,0 +1,19 @@
+{% load component_tags %}
+<div class="modal fade" id="{{ id }}" tabindex="-1" aria-labelledby="{{ id }}Label" aria-hidden="true" {% for key, value in attrs.items %}{{ key }}="{{ value }}" {% endfor %}>
+  <div class="modal-dialog{% if size != 'md' %} modal-{{ size }}{% endif %}{% if centered %} modal-dialog-centered{% endif %}{% if scrollable %} modal-dialog-scrollable{% endif %}">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="{{ id }}Label">{{ title|default:"Modal" }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {% slot "default" %}Modal body content{% endslot %}
+      </div>
+      <div class="modal-footer">
+        {% slot "footer" %}
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        {% endslot %}
+      </div>
+    </div>
+  </div>
+</div>

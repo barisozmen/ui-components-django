@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+{% load component_tags %}
+
+{% block title %}Kanban Board Showcase{% endblock %}
+
+{% block extra_css %}
+<style>
+    .demo-section {
+        margin-bottom: 4rem;
+    }
+    .code-example {
+        background: #f8f9fa;
+        border-radius: 4px;
+        padding: 1rem;
+        margin-top: 1rem;
+    }
+    .feature-list {
+        background: #e7f3ff;
+        border-left: 4px solid #0d6efd;
+        padding: 1rem;
+        margin: 1rem 0;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        {% component "breadcrumb" items=breadcrumb_items %}{% endcomponent %}
+        
+        <h1 class="mb-2">Kanban Board Component</h1>
+        <p class="lead text-muted mb-4">Drag-and-drop task management boards powered by SortableJS</p>
+        
+        <div class="feature-list mb-5">
+            <h5 class="mb-3"><i class="bi bi-check-circle-fill text-primary me-2"></i>Features</h5>
+            <ul class="mb-0">
+                <li>✨ Drag and drop cards between columns</li>
+                <li>🎨 Customizable column variants (primary, success, warning, danger, etc.)</li>
+                <li>📱 Responsive design with horizontal scrolling</li>
+                <li>🔔 Custom events for card movements</li>
+                <li>⚡ Smooth animations and visual feedback</li>
+                <li>🎯 No jQuery dependency - pure vanilla JavaScript</li>
+            </ul>
+        </div>
+
+        {% component "divider" text="Basic Kanban Board" %}{% endcomponent %}
+        
+        <div class="demo-section">
+            <h3>Simple Task Board</h3>
+            <p class="text-muted">A basic three-column kanban board for task management</p>
+            
+            {% component "kanban" columns=basic_columns cards=basic_cards %}
+            {% endcomponent %}
+            
+            <div class="code-example">
+                <code>
+{% verbatim %}{% component "kanban" columns=columns cards=cards %}
+{% endcomponent %}{% endverbatim %}
+                </code>
+            </div>
+        </div>
+
+        {% component "divider" text="Development Workflow" %}{% endcomponent %}
+        
+        <div class="demo-section">
+            <h3>Software Development Board</h3>
+            <p class="text-muted">Track features through your development pipeline</p>
+            
+            {% component "kanban" columns=dev_columns cards=dev_cards %}
+            {% endcomponent %}
+        </div>
+
+        {% component "divider" text="Sales Pipeline" %}{% endcomponent %}
+        
+        <div class="demo-section">
+            <h3>Sales Opportunity Tracker</h3>
+            <p class="text-muted">Manage leads through your sales funnel</p>
+            
+            {% component "kanban" columns=sales_columns cards=sales_cards %}
+            {% endcomponent %}
+        </div>
+
+        {% component "divider" text="Project Phases" %}{% endcomponent %}
+        
+        <div class="demo-section">
+            <h3>Project Management Board</h3>
+            <p class="text-muted">Track project deliverables across different phases</p>
+            
+            {% component "kanban" columns=project_columns cards=project_cards %}
+            {% endcomponent %}
+        </div>
+
+        {% component "divider" text="Usage & Events" %}{% endcomponent %}
+        
+        <div class="demo-section">
+            <h3>Listening to Card Movement Events</h3>
+            <p class="text-muted">The kanban component emits custom events when cards are moved. Open your browser console to see the events.</p>
+            
+            <div class="alert alert-info">
+                <h5 class="alert-heading"><i class="bi bi-info-circle me-2"></i>Event Details</h5>
+                <p class="mb-2">Every time you move a card, a <code>kanban:cardMoved</code> event is dispatched with the following details:</p>
+                <ul class="mb-0">
+                    <li><strong>cardId</strong>: The ID of the moved card</li>
+                    <li><strong>fromColumn</strong>: The column ID where the card came from</li>
+                    <li><strong>toColumn</strong>: The column ID where the card was dropped</li>
+                    <li><strong>newIndex</strong>: The new position of the card in the column</li>
+                </ul>
+            </div>
+            
+            <div class="code-example">
+                <pre><code>// Listen for card movement events
+document.addEventListener('kanban:cardMoved', function(e) {
+  console.log('Card moved:', e.detail);
+  // e.detail contains: cardId, fromColumn, toColumn, newIndex
+  
+  // Example: Send update to backend
+  fetch('/api/kanban/update', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(e.detail)
+  });
+});</code></pre>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h3>Python/Django Setup</h3>
+            <p class="text-muted">Here's how to set up your kanban data in Django views:</p>
+            
+            <div class="code-example">
+                <pre><code>def my_view(request):
+    context = {
+        'columns': [
+            {'id': 'todo', 'title': 'To Do', 'variant': 'secondary'},
+            {'id': 'progress', 'title': 'In Progress', 'variant': 'primary'},
+            {'id': 'done', 'title': 'Done', 'variant': 'success'},
+        ],
+        'cards': [
+            {
+                'id': 1, 
+                'column': 'todo',
+                'title': 'Task 1',
+                'description': 'Description for task 1'
+            },
+            {
+                'id': 2,
+                'column': 'progress',
+                'title': 'Task 2',
+                'description': 'Description for task 2'
+            },
+        ],
+    }
+    return render(request, 'template.html', context)</code></pre>
+            </div>
+        </div>
+
+        <div class="alert alert-success mt-4">
+            <h5 class="alert-heading"><i class="bi bi-lightbulb me-2"></i>Tips</h5>
+            <ul class="mb-0">
+                <li>Cards are automatically draggable - no additional setup needed</li>
+                <li>Use different variants for columns to create visual hierarchy</li>
+                <li>Card IDs should be unique across the entire board</li>
+                <li>Column IDs should match the <code>column</code> property in cards</li>
+                <li>The component handles all drag-and-drop logic automatically</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Example: Listen to kanban events and show toast notifications
+document.addEventListener('kanban:cardMoved', function(e) {
+    const detail = e.detail;
+    console.log('🎯 Kanban Event:', detail);
+    
+    // You could show a toast notification here
+    // or update a backend via AJAX
+});
+</script>
+{% endblock %}

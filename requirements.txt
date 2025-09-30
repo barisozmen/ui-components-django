@@ -1,0 +1,5 @@
+Django>=5.2.0,<6.0
+django-components>=0.100
+django-bootstrap5>=24.0
+crispy-bootstrap5>=2.0.0
+django-crispy-forms>=2.0

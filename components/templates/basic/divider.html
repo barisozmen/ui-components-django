@@ -1,0 +1,10 @@
+{% load component_tags %}
+{% if text %}
+<div class="d-flex align-items-center my-3" {% for key, value in attrs.items %}{{ key }}="{{ value }}" {% endfor %}>
+  <hr class="flex-grow-1">
+  <span class="px-3 text-muted">{{ text }}</span>
+  <hr class="flex-grow-1">
+</div>
+{% else %}
+<hr {% for key, value in attrs.items %}{{ key }}="{{ value }}" {% endfor %}>
+{% endif %}

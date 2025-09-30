@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+{% load component_tags %}
+
+{% block title %}Components Showcase{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        {% component "breadcrumb" items=breadcrumb_items %}{% endcomponent %}
+        
+        <h1 class="mb-4">UI Components Library Showcase</h1>
+        
+        {% component "divider" text="Basic Components" %}{% endcomponent %}
+        
+        <section class="mb-5">
+            <h3>Buttons</h3>
+            <div class="d-flex gap-2 mb-3">
+                {% component "button" variant="primary" %}Primary{% endcomponent %}
+                {% component "button" variant="secondary" %}Secondary{% endcomponent %}
+                {% component "button" variant="success" %}Success{% endcomponent %}
+                {% component "button" variant="danger" %}Danger{% endcomponent %}
+                {% component "button" variant="warning" %}Warning{% endcomponent %}
+                {% component "button" variant="info" %}Info{% endcomponent %}
+                {% component "button" variant="primary" disabled=True %}Disabled{% endcomponent %}
+            </div>
+            
+            <h3>Badges</h3>
+            <div class="d-flex gap-2 mb-3">
+                {% component "badge" variant="primary" %}Primary{% endcomponent %}
+                {% component "badge" variant="success" %}Success{% endcomponent %}
+                {% component "badge" variant="danger" %}Danger{% endcomponent %}
+                {% component "badge" variant="warning" %}Warning{% endcomponent %}
+                {% component "badge" variant="info" pill=True %}Pill Badge{% endcomponent %}
+            </div>
+            
+            <h3>Alerts</h3>
+            {% component "alert" variant="success" %}
+                This is a success alert!
+            {% endcomponent %}
+            {% component "alert" variant="warning" dismissible=True %}
+                This is a dismissible warning alert!
+            {% endcomponent %}
+            
+            <h3>Avatars</h3>
+            <div class="d-flex gap-2 mb-3">
+                {% component "avatar" size="sm" alt="User" %}{% endcomponent %}
+                {% component "avatar" size="md" alt="User" %}{% endcomponent %}
+                {% component "avatar" size="lg" alt="User" %}{% endcomponent %}
+                {% component "avatar" size="md" alt="User" shape="square" %}{% endcomponent %}
+            </div>
+            
+            <h3>Spinner</h3>
+            {% component "spinner" variant="primary" %}{% endcomponent %}
+        </section>
+        
+        {% component "divider" text="Moderate Components" %}{% endcomponent %}
+        
+        <section class="mb-5">
+            <h3>Cards</h3>
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    {% component "card" title="Card Title" subtitle="Card Subtitle" %}
+                        This is some card content that shows how cards work.
+                    {% endcomponent %}
+                </div>
+                <div class="col-md-4 mb-3">
+                    {% component "card" title="Another Card" %}
+                        Another example of card content.
+                    {% endcomponent %}
+                </div>
+            </div>
+            
+            <h3>Dropdown</h3>
+            {% component "dropdown" label="Actions" variant="primary" items=dropdown_items %}
+            {% endcomponent %}
+            
+            <h3 class="mt-4">Tabs</h3>
+            {% component "tabs" items=tab_items active=0 style="tabs" %}
+            {% endcomponent %}
+            
+            <h3 class="mt-4">Accordion</h3>
+            {% component "accordion" id="exampleAccordion" items=accordion_items %}
+            {% endcomponent %}
+            
+            <h3 class="mt-4">Progress Bar</h3>
+            {% component "progress" value=75 variant="success" striped=True %}
+            {% endcomponent %}
+            
+            <h3 class="mt-4">Pagination</h3>
+            {% component "pagination" current_page=2 total_pages=5 %}
+            {% endcomponent %}
+        </section>
+        
+        {% component "divider" text="Complex Components" %}{% endcomponent %}
+        
+        <section class="mb-5">
+            <h3>Data Table</h3>
+            {% component "datatable" columns=datatable_columns data=datatable_data sortable=True searchable=True %}
+            {% endcomponent %}
+            
+            <h3 class="mt-5">Stat Cards</h3>
+            <div class="row">
+                <div class="col-md-3 mb-3">
+                    {% component "statcard" title="Total Users" value="1,234" icon="bi bi-people" trend="up" trend_value="+12%" variant="primary" %}
+                    {% endcomponent %}
+                </div>
+                <div class="col-md-3 mb-3">
+                    {% component "statcard" title="Revenue" value="$45,678" icon="bi bi-currency-dollar" trend="up" trend_value="+5%" variant="success" %}
+                    {% endcomponent %}
+                </div>
+                <div class="col-md-3 mb-3">
+                    {% component "statcard" title="Orders" value="890" icon="bi bi-cart" trend="down" trend_value="-2%" variant="warning" %}
+                    {% endcomponent %}
+                </div>
+                <div class="col-md-3 mb-3">
+                    {% component "statcard" title="Messages" value="56" icon="bi bi-envelope" variant="info" %}
+                    {% endcomponent %}
+                </div>
+            </div>
+            
+            <h3 class="mt-4">Kanban Board</h3>
+            {% component "kanban" columns=kanban_columns cards=kanban_cards %}
+            {% endcomponent %}
+        </section>
+        
+        <div class="mt-5">
+            {% component "button" variant="primary" data-bs-toggle="modal" data-bs-target="#exampleModal" %}
+                Open Modal
+            {% endcomponent %}
+        </div>
+        
+        {% component "modal" id="exampleModal" title="Example Modal" size="lg" %}
+            <p>This is an example modal demonstrating the modal component.</p>
+            <p>You can put any content here.</p>
+            {% slot "footer" %}
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            {% endslot %}
+        {% endcomponent %}
+    </div>
+</div>
+{% endblock %}

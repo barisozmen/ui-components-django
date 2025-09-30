@@ -1,0 +1,20 @@
+{% load component_tags %}
+<nav aria-label="Page navigation" {% for key, value in attrs.items %}{{ key }}="{{ value }}" {% endfor %}>
+  <ul class="pagination">
+    <li class="page-item{% if current_page == 1 %} disabled{% endif %}">
+      <a class="page-link" href="{{ page_url }}{{ current_page|add:'-1' }}" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    {% for page in total_pages|make_list %}
+      <li class="page-item{% if forloop.counter == current_page %} active{% endif %}">
+        <a class="page-link" href="{{ page_url }}{{ forloop.counter }}">{{ forloop.counter }}</a>
+      </li>
+    {% endfor %}
+    <li class="page-item{% if current_page == total_pages %} disabled{% endif %}">
+      <a class="page-link" href="{{ page_url }}{{ current_page|add:'1' }}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>

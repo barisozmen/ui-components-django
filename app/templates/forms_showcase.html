@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load component_tags %}
+
+{% block title %}Forms Showcase{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-4">Forms Components Showcase</h1>
+        
+        {% component "divider" text="Contact Form" %}{% endcomponent %}
+        
+        <div class="row mb-5">
+            <div class="col-lg-8">
+                {% component "card" title="Contact Us" %}
+                    {% component "crispy_form" form=contact_form %}
+                    {% endcomponent %}
+                {% endcomponent %}
+            </div>
+        </div>
+        
+        {% component "divider" text="Registration Form" %}{% endcomponent %}
+        
+        <div class="row mb-5">
+            <div class="col-lg-6">
+                {% component "card" title="Create Account" %}
+                    {% component "crispy_form" form=registration_form %}
+                    {% endcomponent %}
+                {% endcomponent %}
+            </div>
+        </div>
+        
+        {% component "divider" text="Multi-Step Wizard" %}{% endcomponent %}
+        
+        <div class="row">
+            <div class="col-12">
+                {% component "wizard" steps=wizard_steps current_step=0 %}
+                {% endcomponent %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

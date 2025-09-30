@@ -1,0 +1,49 @@
+{% load component_tags %}
+<div class="file-upload" {% for key, value in attrs.items %}{{ key }}="{{ value }}" {% endfor %}>
+  {% if drag_drop %}
+  <div class="file-drop-area border rounded p-4 text-center">
+    <i class="bi bi-cloud-upload fs-1"></i>
+    <p class="mb-0">Drag & drop files here or click to browse</p>
+    <input type="file" class="file-input d-none" {% if multiple %}multiple{% endif %} accept="{{ accept }}" {% if max_size %}data-max-size="{{ max_size }}"{% endif %}>
+  </div>
+  {% else %}
+  <input type="file" class="form-control file-input" {% if multiple %}multiple{% endif %} accept="{{ accept }}" {% if max_size %}data-max-size="{{ max_size }}"{% endif %}>
+  {% endif %}
+  <div class="file-list mt-3"></div>
+</div>
+<script>
+$(document).ready(function() {
+  const $dropArea = $('.file-drop-area');
+  const $fileInput = $('.file-input');
+  const $fileList = $('.file-list');
+  const maxSize = $fileInput.data('max-size');
+  
+  $dropArea.on('click', () => $fileInput.click());
+  
+  $dropArea.on('dragover', (e) => {
+    e.preventDefault();
+    $dropArea.addClass('border-primary');
+  }).on('dragleave', () => {
+    $dropArea.removeClass('border-primary');
+  }).on('drop', (e) => {
+    e.preventDefault();
+    $dropArea.removeClass('border-primary');
+    handleFiles(e.originalEvent.dataTransfer.files);
+  });
+  
+  $fileInput.on('change', function() {
+    handleFiles(this.files);
+  });
+  
+  function handleFiles(files) {
+    $fileList.empty();
+    Array.from(files).forEach(file => {
+      if (maxSize && file.size > maxSize) {
+        alert(`File ${file.name} exceeds max size`);
+        return;
+      }
+      $fileList.append(`<div class="alert alert-info">${file.name} (${(file.size/1024).toFixed(2)} KB)</div>`);
+    });
+  }
+});
+</script>

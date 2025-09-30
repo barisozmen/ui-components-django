@@ -1,0 +1,14 @@
+{% load component_tags %}
+<nav aria-label="breadcrumb" {% for key, value in attrs.items %}{{ key }}="{{ value }}" {% endfor %}>
+  <ol class="breadcrumb">
+    {% for item in items %}
+    <li class="breadcrumb-item{% if forloop.last %} active{% endif %}"{% if forloop.last %} aria-current="page"{% endif %}>
+      {% if item.url and not forloop.last %}
+      <a href="{{ item.url }}">{{ item.label }}</a>
+      {% else %}
+      {{ item.label }}
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ol>
+</nav>

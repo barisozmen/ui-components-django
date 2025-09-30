@@ -1,0 +1,24 @@
+{% load component_tags %}
+<div class="chart-container" {% for key, value in attrs.items %}{{ key }}="{{ value }}" {% endfor %}>
+  <canvas class="chart"></canvas>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+$(document).ready(function() {
+  const ctx = $('.chart')[0].getContext('2d');
+  new Chart(ctx, {
+    type: '{{ chart_type }}',
+    data: {
+      labels: {{ labels|safe }},
+      datasets: [{
+        label: 'Data',
+        data: {{ data|safe }},
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1
+      }]
+    },
+    options: {{ options|safe }}
+  });
+});
+</script>

@@ -1,0 +1,18 @@
+{% load component_tags %}
+<nav class="navbar navbar-expand-{{ expand }} navbar-{{ variant }} bg-{{ variant }}" {% for key, value in attrs.items %}{{ key }}="{{ value }}" {% endfor %}>
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{{ brand_url }}">{{ brand|default:"Brand" }}</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        {% for item in items %}
+        <li class="nav-item">
+          <a class="nav-link{% if item.active %} active{% endif %}" href="{{ item.url }}">{{ item.label }}</a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</nav>

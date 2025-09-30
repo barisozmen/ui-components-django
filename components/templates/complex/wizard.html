@@ -1,0 +1,61 @@
+{% load component_tags %}
+<div class="wizard" {% for key, value in attrs.items %}{{ key }}="{{ value }}" {% endfor %}>
+  <div class="wizard-steps mb-4">
+    <ul class="nav nav-pills justify-content-center">
+      {% for step in steps %}
+      <li class="nav-item">
+        <span class="nav-link{% if forloop.counter0 == current_step %} active{% elif forloop.counter0 < current_step %} completed{% endif %}">
+          {{ forloop.counter }}. {{ step.title }}
+        </span>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="wizard-content">
+    {% for step in steps %}
+    <div class="wizard-step{% if forloop.counter0 == current_step %} active{% endif %}" data-step="{{ forloop.counter0 }}">
+      {{ step.content|safe }}
+    </div>
+    {% endfor %}
+  </div>
+  <div class="wizard-actions mt-4 d-flex justify-content-between">
+    <button type="button" class="btn btn-secondary wizard-prev"{% if current_step == 0 %} disabled{% endif %}>Previous</button>
+    <button type="button" class="btn btn-primary wizard-next"{% if current_step == total_steps|add:'-1' %} disabled{% endif %}>Next</button>
+  </div>
+</div>
+<script>
+$(document).ready(function() {
+  let currentStep = {{ current_step }};
+  const totalSteps = {{ total_steps }};
+  
+  $('.wizard-next').on('click', function() {
+    if (currentStep < totalSteps - 1) {
+      currentStep++;
+      updateWizard();
+    }
+  });
+  
+  $('.wizard-prev').on('click', function() {
+    if (currentStep > 0) {
+      currentStep--;
+      updateWizard();
+    }
+  });
+  
+  function updateWizard() {
+    $('.wizard-step').removeClass('active').hide();
+    $(`.wizard-step[data-step="${currentStep}"]`).addClass('active').show();
+    
+    $('.wizard-steps .nav-link').removeClass('active completed');
+    $('.wizard-steps .nav-link').each(function(i) {
+      if (i < currentStep) $(this).addClass('completed');
+      if (i === currentStep) $(this).addClass('active');
+    });
+    
+    $('.wizard-prev').prop('disabled', currentStep === 0);
+    $('.wizard-next').prop('disabled', currentStep === totalSteps - 1);
+  }
+  
+  updateWizard();
+});
+</script>

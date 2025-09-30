@@ -1,0 +1,17 @@
+{% load component_tags %}
+<div class="dropdown" {% for key, value in attrs.items %}{{ key }}="{{ value }}" {% endfor %}>
+  <button class="btn btn-{{ variant }} dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    {{ label }}
+  </button>
+  <ul class="dropdown-menu">
+    {% for item in items %}
+    {% if item.divider %}
+    <li><hr class="dropdown-divider"></li>
+    {% elif item.header %}
+    <li><h6 class="dropdown-header">{{ item.header }}</h6></li>
+    {% else %}
+    <li><a class="dropdown-item{% if item.active %} active{% endif %}{% if item.disabled %} disabled{% endif %}" href="{{ item.url|default:'#' }}">{{ item.label }}</a></li>
+    {% endif %}
+    {% endfor %}
+  </ul>
+</div>

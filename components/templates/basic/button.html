@@ -1,0 +1,4 @@
+{% load component_tags %}
+<button type="{{ type }}" class="btn btn-{{ variant }} btn-{{ size }}{% if disabled %} disabled{% endif %}" {% if disabled %}disabled{% endif %} {% for key, value in attrs.items %}{{ key }}="{{ value }}" {% endfor %}>
+  {% slot "default" %}Button{% endslot %}
+</button>
